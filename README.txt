@@ -1,0 +1,1 @@
+Followed this tutorial: https://github.com/mjhea0/flaskr-tdd
