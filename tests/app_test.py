@@ -56,7 +56,7 @@ def test_messages(client):
     login(client, app.config["USERNAME"],app.config["PASSWORD"])
     rv = client.post(
         "/add",
-        data=dict(title="<Hello>", text="<strong>HTML</storng> allowed here"),
+        data=dict(title="<Hello>", text="<strong>HTML</strong> allowed here"),
         follow_redirects=True,
     )
     assert b"No entries here so far" not in rv.data #how does this not conflict with ln 43?
