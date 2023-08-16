@@ -37,7 +37,7 @@ h2 {
 }
 
 .entries li h2 {
-    margin-left: -1em;
+    margin-left: 1em;
 }
 
 .add-entry {
