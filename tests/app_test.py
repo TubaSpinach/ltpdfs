@@ -28,7 +28,7 @@ def login(client, username, password):
 def logout(client):
     return client.get("/logout", follow_redirects=True)
 
-def test_index():
+def test_index(client):
     response = client.get("/", content_type="html/text")
     assert response.status_code == 200
 
