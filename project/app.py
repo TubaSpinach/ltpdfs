@@ -1,17 +1,26 @@
-
+from pathlib import Path
 import sqlite3
-from flask import Flask, g, render_template, flash, request, session, redirect, url_for, abort, jsonify
-
-#config
+from flask import Flask, g, render_template, flash, request, session, redirect, url_for, abort, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
+#config -- only uppercase properties are used by config.from_object
 DATABASE = "ltpdfs.db"
+BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOAD_FOLDER = "/project/uploads"
+ALLOWED_EXTENSIONS = {'txt', 'pdf'}
 USERNAME = "admin"
 PASSWORD = "admin"
 SECRET_KEY = "change_me"
+
 #create/init Flask app
 app = Flask(__name__)
 
 app.config.from_object(__name__)
 
+#file checking
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#database functions
 def connect_db():
     rv = sqlite3.connect(app.config["DATABASE"])
     rv.row_factory = sqlite3.Row
@@ -29,11 +38,13 @@ def get_db():
         g.sqlite_db = connect_db()
     return g.sqlite_db
 
+#tell the app how to close the db
 @app.teardown_appcontext
 def close_db(error):
     if hasattr(g, "sqlite_db"):
         g.sqlite_db.close()
 
+#send info to index.html
 @app.route("/")
 def index():
     db = get_db()
@@ -41,6 +52,31 @@ def index():
     entries = cur.fetchall()
     return render_template('index.html', entries=entries)
 
+@app.route("/upload_file", methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+
+        #catch empty files submitted by browser
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(BASE_DIR.joinpath(UPLOAD_FOLDER,filename).absolute())  
+            return redirect(url_for('download_file', name=filename))
+        
+    return render_template('upload_file.html')
+
+@app.route('/uploads/<name>')
+def download_file(name):
+    return send_from_directory(app.config[UPLOAD_FOLDER], name)
+
+#send and receive info from login.html
 @app.route("/login", methods=['GET','POST'])
 def login():
     error = None

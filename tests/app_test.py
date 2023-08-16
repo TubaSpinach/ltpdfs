@@ -1,5 +1,4 @@
 import pytest
-import os
 from pathlib import Path
 import json
 from project.app import app, init_db
