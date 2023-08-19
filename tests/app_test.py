@@ -66,3 +66,12 @@ def test_delete_message(client):
     rv = client.get('/delete/1')
     data = json.loads(rv.data)
     assert data["status"] == 1
+
+def test_upload_file(client):
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    rv = client.post(
+        "/upload_file",
+        data = dict(file=Path("upload_test_file.pdf").absolute()),
+        follow_redirects=True,
+    )
+    assert Path("uploads/upload_test_file.pdf").exists() == True
