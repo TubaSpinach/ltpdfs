@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 #config -- only uppercase properties are used by config.from_object
 DATABASE = "ltpdfs.db"
 BASE_DIR = Path(__file__).resolve().parent.parent
-UPLOAD_FOLDER = "/project/uploads"
+UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {'txt', 'pdf'}
 USERNAME = "admin"
 PASSWORD = "admin"
@@ -67,14 +67,15 @@ def upload_file():
         
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(BASE_DIR.joinpath(UPLOAD_FOLDER,filename).absolute())  
+            print(filename)
+            file.save(Path('project/uploads/' + filename).resolve())  
             return redirect(url_for('download_file', name=filename))
         
     return render_template('upload_file.html')
 
 @app.route('/uploads/<name>')
 def download_file(name):
-    return send_from_directory(app.config[UPLOAD_FOLDER], name)
+    return send_from_directory('./uploads', name)
 
 #send and receive info from login.html
 @app.route("/login", methods=['GET','POST'])

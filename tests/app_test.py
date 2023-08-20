@@ -1,5 +1,6 @@
 import pytest
 from pathlib import Path
+import os
 import json
 from project.app import app, init_db
 
@@ -71,7 +72,9 @@ def test_upload_file(client):
     login(client, app.config["USERNAME"], app.config["PASSWORD"])
     rv = client.post(
         "/upload_file",
-        data = dict(file=Path("upload_test_file.pdf").absolute()),
+        data = dict(file=Path("project/upload_test_file.pdf").open("rb")),
         follow_redirects=True,
     )
-    assert Path("uploads/upload_test_file.pdf").exists() == True
+    newfilepath = Path("project/uploads/project_upload_test_file.pdf")
+    assert newfilepath.exists() == True
+    os.remove(newfilepath)
