@@ -1,57 +1,38 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Flaskr</title>
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="{{ url_for('static', filename='style.css') }}"
-        />
-    </head>
-    <body>
-        <div class="page">
-            <h1>LTPDFS-TDD</h1>
-            <div class="metanav">
-                {% if not session.logged_in %}
-                <a href="{{ url_for('login') }}">log in</a>
-                {% else %}
-                <a href="{{ url_for('logout') }}">log out</a>
-                {% endif %}
-                <a href="{{ url_for('upload_file') }}">upload</a>
-            </div>
+{% extends 'base.html' %}
 
-            {% for message in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %} {%block body %}{% endblock %} {% if session.logged_in %}
-            <form
-              action="{{ url_for('add_entry') }}"
-              method="post"
-              class="add-entry"
-            >
-              <dl>
-                <dt>Title:</dt>
-                <dd><input type="text" size="30" name="title"/></dd>
-                <dt>Text:</dt>
-                <dd><textarea name="text" rows="5" cols="40"></textarea></dd>
-                <dd><input type="submit" value="Share" /></dd>
-              </dl>
-            </form>
-            {% endif %}
+{% block header %}
+    <h1>{% block title %}Posts{% endblock %}</h1>
+{% endblock %}        
+ 
+{% block content %}
+<form
+        action="{{ url_for('add_entry') }}"
+        method="post"
+        class="add-entry"
+    >
+    <dl>
+        <dt>Title:</dt>
+        <dd><input type="text" size="30" name="title"/></dd>
+        <dt>Text:</dt>
+        <dd><textarea name="text" rows="5" cols="40"></textarea></dd>
+        <dd><input type="submit" value="Share" /></dd>
+    </dl>
+</form>
 
-            <ul class="entries">
-                {% for entry in entries %}
-                <li class="entry">
-                    <h2 id="{{ entry.id }}">{{ entry.title }}</h2>
-                    {{ entry.text|safe }}
-                </li>
-                {% else %}
-                <li><em>No entries yet. Add some!</em></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <script
-          type="text/javascript"
-          src="{{url_for('static', filename='main.js') }}"
-        ></script>
-    </body>
-</html>
+
+<ul class="entries">
+    {% for entry in entries %}
+        <li class="entry">
+            <h2 id="{{ entry.id }}">{{ entry.title }}</h2>
+                {{ entry.text|safe }}
+        </li>
+    {% else %}
+        <li><em>No entries yet. Add some!</em></li>
+    {% endfor %}
+</ul>
+<script
+    type="text/javascript"
+    src="{{url_for('static', filename='main.js') }}"
+></script>
+
+{% endblock %}
