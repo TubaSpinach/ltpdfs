@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<title>Liam Tait | Bio</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='biostyle.css') }}">
+<nav>
+    <h1>LTPDFS</h1>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        {% if g.user %}
+            <li><span>{{ g.user['username'] }}</span></li>
+            <li><a href="{{ url_for('logout') }}"">Log Out</a></li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Log In</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<body>
+    <h1 class="biohead">Liam Tait</h1>
+    <hr>
+    <h2>Web Developer</h2>
+    <div class="biobody">
+        <p>A student of the web, Liam crafts meticulous, best-practice driven
+            websites with two goals in mind: make something cool, and make something
+            useful. This pursuit has lead him to make a browser based pdf tool suite
+            drawing on python's pypdf library to deliver solutions which should not
+            be proprietary. Latha mhah.
+        </p>
+    </div>
+    <h2 class="contact">Contact Info</h1>
+    <div class="contact">
+        <ul class="contact">
+            <li>Email: lhtait@gmail.com</li>
+            <li>Web: <a href:"http://ltpdfs.com">http://ltpdfs.com</a></li>
+            <li>Tel: 46-978-34-6671</li>
+        </ul>
+    </div>
+</body>

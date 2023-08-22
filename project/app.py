@@ -126,5 +126,9 @@ def delete_entry(post_id):
     
     return jsonify(result)
 
+@app.route("/bio", methods=['GET','POST'])
+def bio():
+    return render_template('bio.html')
+
 if __name__ == "__main__":
     app.run()
