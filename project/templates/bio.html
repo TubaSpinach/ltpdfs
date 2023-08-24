@@ -13,7 +13,7 @@
         {% endif %}
     </ul>
 </nav>
-<body>
+<body class="animated">
     <h1 class="biohead">Liam Tait</h1>
     <hr>
     <h2>Web Developer</h2>
@@ -27,10 +27,15 @@
     </div>
     <h2 class="contact">Contact Info</h1>
     <div class="contact">
-        <ul class="contact">
+        <ul class="animated" id="animateme">
             <li>Email: lhtait@gmail.com</li>
             <li>Web: <a href:"http://ltpdfs.com">http://ltpdfs.com</a></li>
             <li>Tel: 46-978-34-6671</li>
         </ul>
     </div>
+    <script>
+        document.getElementsByID('animateme').onclick = function(e) {
+            this.style.backgroundColor = "red"
+        }
+    </script>
 </body>

@@ -24,3 +24,8 @@ ul.contact {
 a:hover {
     color: green;
 }
+
+.animated{
+    transition-property: background-color;
+    transition-duration: 3s;
+}
